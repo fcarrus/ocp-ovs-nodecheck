@@ -122,8 +122,9 @@ func showPods() {
 				if err != nil {
 					fmt.Println("ERR: ", err)
 				} else {
-					fmt.Println("INF: ", resp.Status, resp.Body)
+					fmt.Println("INF: ", resp.Status)
 				}
+				resp.Body.Close()
 
 			}
 			fmt.Println("")
