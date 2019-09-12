@@ -101,9 +101,12 @@ func main() {
 
 func showPods() {
 
+	podselector := "name=ocp-ovs-nodecheck"
+	fmt.Println("Looking for Pods with label ", podselector)
+
 	for {
 		pods, err := clientset.CoreV1().Pods(namespace).List(metav1.ListOptions{
-			LabelSelector: "name=ocp-ovs-nodecheck",
+			LabelSelector: podselector,
 			// LabelSelector: "app=phpinfo",
 		})
 
@@ -119,7 +122,7 @@ func showPods() {
 				if err != nil {
 					fmt.Println("ERR: ", err)
 				} else {
-					fmt.Println("INF: ", resp)
+					fmt.Println("INF: ", resp.Status, resp.Body)
 				}
 
 			}
