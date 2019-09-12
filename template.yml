@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: ocp-ovs-nodecheck
+    name: ocp-ovs-nodecheck
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: 'ocp-ovs-nodecheck:latest'
+    source:
+      git:
+        uri: 'https://github.com/fcarrus/ocp-ovs-nodecheck'
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 'go-toolset-rhel7:latest'
+          namespace: openshift
+      type: Source
+    triggers:
+      - type: ConfigChange
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ocp-ovs-nodecheck
+  spec:
+    lookupPolicy:
+      local: true
+- apiVersion: apps/v1
+  kind: DaemonSet
+  metadata:
+    name: ocp-ovs-nodecheck
+    labels:
+      app: ocp-ovs-nodecheck
+  spec:
+    selector:
+      matchLabels:
+        name: ocp-ovs-nodecheck
+    template:
+      metadata:
+        labels:
+          name: ocp-ovs-nodecheck
+      spec:
+        containers:
+        - name: nodecheck
+          image: ocp-ovs-nodecheck:latest
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+        terminationGracePeriodSeconds: 30
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - ocp-ovs-nodecheck
+          from:
+            kind: ImageStreamTag
+            name: 'ocp-ovs-nodecheck:latest'
+
