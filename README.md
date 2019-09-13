@@ -47,7 +47,7 @@ oc -n openshift get secret imagestreamsecret --export -o yaml | oc create -f -
 oc create -f template.yml
 ```
 
-* Give the project's serviceaccount the rights to read the Pods' info
+* Give the tool's serviceaccount the rights to read the Pods' info
 
 ```
 oc adm policy add-role-to-user view -z ocp-ovs-nodecheck
@@ -58,7 +58,7 @@ oc adm policy add-role-to-user view -z ocp-ovs-nodecheck
 * For each Pod, look at its logs
 
 ```
-oc logs -f pods/ocp-ovs-nodecheck-gbx8m
+oc logs -f pods/ocp-ovs-nodecheck-4d55c
 ```
 
 You should see something like:
@@ -83,4 +83,5 @@ YMMV of course, depending on the issue.
 
 ## TODOs
 
-* The built image is pretty big
+* The built image is pretty big: should do something about it
+
