@@ -34,6 +34,13 @@ oc -n openshift import-image go-toolset-rhel7 \
 oc new-project myproject
 ```
 
+* Create a pull secret to access Red Hat Golang S2I image, taking it from the openshift project
+
+```
+oc -n openshift get secret imagestreamsecret --export -o yaml | oc create -f -
+```
+
+
 * Create the DaemonSet and other objects from the [template.yml](template.yml) file 
 
 ```

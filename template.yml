@@ -23,6 +23,8 @@ items:
           kind: ImageStreamTag
           name: 'go-toolset-rhel7:latest'
           namespace: openshift
+        pullSecret:
+          name: imagestreamsecret
       type: Source
     triggers:
       - type: ConfigChange
