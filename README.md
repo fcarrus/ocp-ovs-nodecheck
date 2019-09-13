@@ -27,10 +27,22 @@ If there are any issues (like [this one](https://access.redhat.com/solutions/308
 oc -n openshift import-image go-toolset-rhel7 --from=registry.redhat.io/devtools/go-toolset-rhel7 --confirm
 ```
 
+* Create your project
+
+```
+oc new-project myproject
+```
+
 * Load the [template.yml](template.yml) file 
 
 ```
 oc create -f template.yml
+```
+
+* Give the project's default serviceaccount the rights to read the Pods' info
+
+```
+oc adm policy add-role-to-user view -z default
 ```
 
 * Wait for the build to complete and until all the Pods are running.
