@@ -91,7 +91,7 @@ func main() {
 	}
 
 	go webServer()
-	go showPods()
+	go checkPods()
 
 	fmt.Println("Starting main loop.")
 	for {
@@ -99,7 +99,7 @@ func main() {
 	}
 }
 
-func showPods() {
+func checkPods() {
 
 	podselector := "name=ocp-ovs-nodecheck"
 	fmt.Println("Looking for Pods with label ", podselector)
@@ -110,30 +110,37 @@ func showPods() {
 			// LabelSelector: "app=phpinfo",
 		})
 
-		for _, pod := range pods.Items {
-			fmt.Printf("Pod: name:%v state:%v ip:%v\n", pod.Name, pod.Status.Phase, pod.Status.PodIP)
-			if pod.Status.Phase == "Running" {
-				url := fmt.Sprintf(
-					"http://%v:%v/",
-					pod.Status.PodIP,
-					pod.Spec.Containers[0].Ports[0].ContainerPort)
-				fmt.Printf("Attempting to GET %s ...", url)
-				resp, err := http.Get(url)
-				if err != nil {
-					fmt.Println("ERR: ", err)
-				} else {
-					fmt.Println("INF: ", resp.Status)
-				}
-				resp.Body.Close()
-
-			}
-			fmt.Println("")
-		}
-
 		if err != nil {
-			panic(err.Error())
+			ftm.Println("ERR: ", err)
+		} else {
+
+			fmt.Printf("\nFound %d Pods in the namespace:\n\n", len(pods.Items))
+
+			for _, pod := range pods.Items {
+				fmt.Printf("Pod: name:%v state:%v ip:%v\n", pod.Name, pod.Status.Phase, pod.Status.PodIP)
+				if pod.Status.Phase == "Running" {
+					url := fmt.Sprintf(
+						"http://%v:%v/",
+						pod.Status.PodIP,
+						pod.Spec.Containers[0].Ports[0].ContainerPort)
+					fmt.Printf("Attempting to GET %s ...", url)
+					resp, err := http.Get(url)
+					if err != nil {
+						fmt.Println("ERR: ", err)
+					} else {
+						fmt.Println(resp.Status)
+					}
+					resp.Body.Close()
+
+				}
+				fmt.Println("")
+			}
+
+			if err != nil {
+				panic(err.Error())
+			}
+
 		}
-		fmt.Printf("There are %d pods in the namespace\n\n", len(pods.Items))
 
 		time.Sleep(5 * time.Second)
 	}
