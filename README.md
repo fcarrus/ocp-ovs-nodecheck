@@ -10,7 +10,8 @@ This tool creates a Pod for each Node in your Cluster (DaemonSet).
 
 Each Pod tries to connect to all other Pods of the DaemonSet on port 8080 with an http GET.
 
-If there are any issues in the Cluster's intra-node connectivity, you'll likely see it in the logs.
+If there are any issues (like [this one](https://access.redhat.com/solutions/3083121) ) in the Cluster's intra-node connectivity, you'll likely see it in the logs.
+
 
 ## What you need
 
