@@ -81,6 +81,14 @@ Pod: name:ocp-ovs-nodecheck-tx4kl state:Running ip:10.129.2.58, attempting to GE
 
 YMMV of course, depending on the issue.
 
+## Cleaning up
+
+When you're done, delete the project or just the tool's objects:
+
+```
+oc delete -f template.yml
+```
+
 ## TODOs
 
 * The built image is pretty big: should do something about it
