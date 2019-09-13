@@ -24,7 +24,8 @@ If there are any issues (like [this one](https://access.redhat.com/solutions/308
 * Import the go-toolset-rhel7 ImageStream
 
 ```
-oc -n openshift import-image go-toolset-rhel7 --from=registry.redhat.io/devtools/go-toolset-rhel7 --confirm
+oc -n openshift import-image go-toolset-rhel7 \
+  --from=registry.redhat.io/devtools/go-toolset-rhel7 --confirm
 ```
 
 * Create your project
