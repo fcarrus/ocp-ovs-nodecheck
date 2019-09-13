@@ -10,7 +10,7 @@ This tool creates a Pod for each Node in your Cluster (DaemonSet).
 
 Each Pod tries to connect to all other Pods of the DaemonSet on port 8080 with an http GET.
 
-If there are any issues (like [this one](https://access.redhat.com/solutions/3083121) ) in the Cluster's intra-node connectivity, you'll likely see it in the logs.
+If there are any issues (like [this one](https://access.redhat.com/solutions/3083121)) in the Cluster's intra-node connectivity, you'll likely see it in the logs.
 
 
 ## What you need
@@ -38,10 +38,10 @@ oc create -f template.yml
 * For each Pod, look at its logs
 
 ```
-oc logs -f ds/ocp-ovs-nodecheck
+oc logs -f pods/ocp-ovs-nodecheck-gbx8m
 ```
 
-you should see something like:
+You should see something like:
 
 ```
 Found 5 Pods in the namespace:
@@ -55,10 +55,8 @@ Pod: name:ocp-ovs-nodecheck-wwg7v state:Running ip:10.129.0.248, attempting to G
 And, in case something's wrong:
 
 ```
-Pod: name:ocp-ovs-nodecheck-4d55c state:Running ip:10.130.1.16, attempting to GET http://10.130.1.16:8080/ ...200 OK
-Pod: name:ocp-ovs-nodecheck-5xv6m state:Running ip:10.128.3.65, attempting to GET http://10.128.3.65:8080/ ...200 OK
-Pod: name:ocp-ovs-nodecheck-q7wsk state:Running ip:10.130.2.106, attempting to GET http://10.130.2.106:8080/ ...200 OK
-Pod: name:ocp-ovs-nodecheck-tx4kl state:Running ip:10.129.2.58, attempting to GET http://10.129.2.58:8080/ ...ERR:  Get http://10.129.2.58:8080/: dial tcp 10.129.2.58:8080: i/o timeout
+Pod: name:ocp-ovs-nodecheck-tx4kl state:Running ip:10.129.2.58, attempting to GET http://10.129.2.58:8080/ ...
+  ERR:  Get http://10.129.2.58:8080/: dial tcp 10.129.2.58:8080: i/o timeout
 ```
 
 YMMV of course, depending on the issue.
