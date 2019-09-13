@@ -18,13 +18,11 @@ limitations under the License.
 package main
 
 import (
-	// "flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 
-	// "path/filepath"
 	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -107,7 +105,6 @@ func checkPods() {
 	for {
 		pods, err := clientset.CoreV1().Pods(namespace).List(metav1.ListOptions{
 			LabelSelector: podselector,
-			// LabelSelector: "app=phpinfo",
 		})
 
 		if err != nil {
