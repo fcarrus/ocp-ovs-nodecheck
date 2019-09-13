@@ -6,7 +6,7 @@ A simple tool to test for intra-node connection issues.
 
 ## How it works
 
-This tool creates a Pod for each Node in your Cluster (DaemonSet).
+This tool runs in a Pod, one for each Node in your Cluster (DaemonSet).
 
 Each Pod tries to connect to all other Pods of the DaemonSet on port 8080 with an http GET.
 
@@ -19,31 +19,31 @@ If there are any issues (like [this one](https://access.redhat.com/solutions/308
 * An OpenShift project and admin privileges on it
 * The go-toolset-rhel7 ImageStream in the openshift project
 
-## How to use it
+## How to build it and use it
 
-* Import the go-toolset-rhel7 ImageStream
+* Import the go-toolset-rhel7 ImageStream from the Red Hat Registry:
 
 ```
 oc -n openshift import-image go-toolset-rhel7 \
   --from=registry.redhat.io/devtools/go-toolset-rhel7 --confirm
 ```
 
-* Create your project
+* Create a new project
 
 ```
 oc new-project myproject
 ```
 
-* Load the [template.yml](template.yml) file 
+* Create the DaemonSet and other objects from the [template.yml](template.yml) file 
 
 ```
 oc create -f template.yml
 ```
 
-* Give the project's default serviceaccount the rights to read the Pods' info
+* Give the project's serviceaccount the rights to read the Pods' info
 
 ```
-oc adm policy add-role-to-user view -z default
+oc adm policy add-role-to-user view -z ocp-ovs-nodecheck
 ```
 
 * Wait for the build to complete and until all the Pods are running.
@@ -74,3 +74,6 @@ Pod: name:ocp-ovs-nodecheck-tx4kl state:Running ip:10.129.2.58, attempting to GE
 
 YMMV of course, depending on the issue.
 
+## TODOs
+
+* The built image is pretty big
