@@ -26,7 +26,7 @@ If there are any issues in the Cluster's intra-node connectivity, you'll likely 
 oc -n openshift import-image go-toolset-rhel7 --from=registry.redhat.io/devtools/go-toolset-rhel7 --confirm
 ```
 
-* Load the [template.yaml](template.yaml) file 
+* Load the [template.yml](template.yml) file 
 
 ```
 oc create -f template.yaml
