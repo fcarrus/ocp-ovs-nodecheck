@@ -2,15 +2,15 @@
 ocp-ovs-nodecheck
 ===
 
-A simple tool to check intra-node connection issues.
+A simple tool to test for intra-node connection issues.
 
 ## How it works
 
 This tool creates a Pod for each Node in your Cluster (DaemonSet).
-Each Pod gets all its siblings and retrieve their IP addresses.
-It then attempts to connect to port 8080 with an http GET.
 
-If there are any issues in the Cluster's intra-node connectivity, you'll also see the issue in the logs.
+Each Pod tries to connect to all other Pods of the DaemonSet on port 8080 with an http GET.
+
+If there are any issues in the Cluster's intra-node connectivity, you'll likely see it in the logs.
 
 ## What you need
 

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ocp-ovs-nodecheck
+  labels:
+    app: ocp-ovs-nodecheck
+spec:
+  selector:
+    matchLabels:
+      name: ocp-ovs-nodecheck
+  template:
+    metadata:
+      labels:
+        name: ocp-ovs-nodecheck
+    spec:
+      containers:
+      - name: nodecheck
+        image: ocp-ovs-nodecheck:latest
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+      terminationGracePeriodSeconds: 30
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - ocp-ovs-nodecheck
+        from:
+          kind: ImageStreamTag
+          name: 'ocp-ovs-nodecheck:latest'

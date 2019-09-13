@@ -1,0 +1,25 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: ocp-ovs-nodecheck
+  name: ocp-ovs-nodecheck
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'ocp-ovs-nodecheck:latest'
+  source:
+    git:
+      uri: 'https://github.com/fcarrus/ocp-ovs-nodecheck'
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'go-toolset-rhel7:latest'
+        namespace: openshift
+    type: Source
+  triggers:
+    - type: ConfigChange
