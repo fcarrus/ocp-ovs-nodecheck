@@ -111,7 +111,7 @@ func checkPods() {
 		})
 
 		if err != nil {
-			ftm.Println("ERR: ", err)
+			fmt.Println("ERR: ", err)
 		} else {
 
 			fmt.Printf("\nFound %d Pods in the namespace:\n\n", len(pods.Items))

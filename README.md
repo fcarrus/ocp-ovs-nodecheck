@@ -29,10 +29,18 @@ oc -n openshift import-image go-toolset-rhel7 --from=registry.redhat.io/devtools
 * Load the [template.yml](template.yml) file 
 
 ```
-oc create -f template.yaml
+oc create -f template.yml
 ```
 
-* Wait for the build to complete and wait until all Pods are running
+* Wait for the build to complete and until all the Pods are running.
 
-* For each Pod, look at its logs, you should see something like:
+* For each Pod, look at its logs
+
+```
+oc logs -f ds/ocp-ovs-nodecheck
+```
+
+you should see something like:
+
+
 
