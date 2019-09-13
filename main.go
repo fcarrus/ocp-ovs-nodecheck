@@ -117,13 +117,13 @@ func checkPods() {
 			fmt.Printf("\nFound %d Pods in the namespace:\n\n", len(pods.Items))
 
 			for _, pod := range pods.Items {
-				fmt.Printf("Pod: name:%v state:%v ip:%v\n", pod.Name, pod.Status.Phase, pod.Status.PodIP)
+
 				if pod.Status.Phase == "Running" {
 					url := fmt.Sprintf(
 						"http://%v:%v/",
 						pod.Status.PodIP,
 						pod.Spec.Containers[0].Ports[0].ContainerPort)
-					fmt.Printf("Attempting to GET %s ...", url)
+					fmt.Printf("Pod: name:%v state:%v ip:%v, attempting to GET %s ...", pod.Name, pod.Status.Phase, pod.Status.PodIP, url)
 					resp, err := http.Get(url)
 					if err != nil {
 						fmt.Println("ERR: ", err)
@@ -131,7 +131,8 @@ func checkPods() {
 						fmt.Println(resp.Status)
 					}
 					resp.Body.Close()
-
+				} else {
+					fmt.Printf("Pod: name:%v state:%v\n", pod.Name, pod.Status.Phase)
 				}
 				fmt.Println("")
 			}
